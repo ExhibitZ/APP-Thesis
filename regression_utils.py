@@ -160,11 +160,11 @@ def compute_rolling_k(k_raw, t_idx, window_n):
     last_beta = 0.0
     for i in range(len(k_raw)):
         lo = max(0, i + 1 - window_n)
-        t_w = t_idx[lo:i+1].astype(float).reshape(-1, 1)
+        t_w = t_idx[lo:i+1].astype(float)
         k_w = k_raw[lo:i+1]
-        denom = float(t_w.T @ t_w)
+        denom = float(np.dot(t_w, t_w))
         if abs(denom) > 1e-12:
-            last_beta = float(t_w.T @ k_w) / denom
+            last_beta = float(np.dot(t_w, k_w)) / denom
         k_roll[i] = last_beta * float(t_idx[i])
     return k_roll, last_beta
 
@@ -176,10 +176,10 @@ def forecast_rolling_k(k_hist, t_hist, t_fc, window_n):
     fc_k = []
     for t_new in t_fc:
         lo = max(0, len(all_k) - window_n)
-        t_w = np.array(all_t[lo:], dtype=float).reshape(-1, 1)
+        t_w = np.array(all_t[lo:], dtype=float)
         k_w = np.array(all_k[lo:])
-        denom = float(t_w.T @ t_w)
-        beta = float(t_w.T @ k_w) / denom if abs(denom) > 1e-12 else 0.0
+        denom = float(np.dot(t_w, t_w))
+        beta = float(np.dot(t_w, k_w)) / denom if abs(denom) > 1e-12 else 0.0
         k_new = beta * float(t_new)
         fc_k.append(k_new)
         all_k.append(k_new)
