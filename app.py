@@ -62,13 +62,13 @@ def get_ai_analysis(api_key, context_text):
     try:
         client = Groq(api_key=api_key)
         system_prompt = """You are a Senior Market Economist and Quantitative Analyst specializing in dynamic price modeling.
-Your task is to interpret Excess Price Adjustment Model (EPAM) simulation results and translate them into a clear, 
+Your task is to interpret Evans Price Adjustment Model (EPAM) simulation results and translate them into a clear, 
 concise, and actionable market intelligence report.
 Your analysis MUST be grounded in the specific numerical data provided — never give generic statements.
 Always cite the exact numbers (MAPE %, K values, price levels) from the context when making claims.
 Write in professional but accessible English so that a business executive without a math background can understand."""
 
-        prompt = f"""Below are the quantitative results from a Market Dynamics Simulation using the Excess Price Adjustment Model (EPAM).
+        prompt = f"""Below are the quantitative results from a Market Dynamics Simulation using the Evans Price Adjustment Model (EPAM).
 The EPAM is a first-order Ordinary Differential Equation: dP/dt = K × (Qd - Qs), where price adjusts proportionally
 to the gap between Demand Quantity (Qd) and Supply Quantity (Qs), governed by adjustment speed K.
 
@@ -162,7 +162,7 @@ View demand/supply curves, K trajectories, and EPAM price simulations for each m
 Switch to the Explanation tab for an AI-generated market narrative (requires a Groq API key).
     """)
 
-tbar_left, tbar_right = st.columns([10, 1])
+tbar_left, tbar_right = st.columns([7, 2])
 with tbar_left:
     st.markdown('<p class="top-bar-title">📈 Market Dynamics Analyzer</p>', unsafe_allow_html=True)
 with tbar_right:
@@ -170,13 +170,13 @@ with tbar_right:
     toggle_icon = "☀️" if st.session_state.theme_mode == "dark" else "🌙"
     ic1, ic2 = st.columns(2)
     with ic1:
-        if st.button("ℹ️", key="info_btn", help="How to use this app"):
+        if st.button("Information", key="info_btn", help="How to use this app"):
             show_info_dialog()
     with ic2:
         st.button(toggle_icon, on_click=toggle_theme, key="theme_toggle", help="Toggle light/dark mode")
 
 # --- Main Layout ---
-nav_options = ["Data Setup", "Simulation Results", "Explanation"]
+nav_options = ["1\\. Data Setup", "2\\. Simulation Results", "3\\. Explanation"]
 if 'nav_selection' not in st.session_state:
     st.session_state.nav_selection = nav_options[0]
 
